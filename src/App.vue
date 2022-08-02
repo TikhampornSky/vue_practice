@@ -2,17 +2,19 @@
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
   <section> Tontan's Project </section>
-  <img :src="picture"  :width="size" :height="size"/><br>         <!-- ผูก Attribute (e.g src, width, height) กับตัว data โดยจะใส่ v-bind: หรือ : ก็ได้ -->
+  <img :src="picture"  :width="size" :height="size" ref="imageURL"/><br>         <!-- ผูก Attribute (e.g src, width, height) กับตัว data โดยจะใส่ v-bind: หรือ : ก็ได้ -->
+                                                                                 <!-- ref จะคล้ายๆกับการตั้งชื่อ id หรือ class ใน tage HTML -->
   ระบุชื่อเล่น: <input type="text" v-on:input="setNickname"/>
 
   <form @submit="submitForm">  <!-- v-on:submit หรือ @submit ก็ได้  หากไม่ต้องการให้เกิดการรีเฟรช สามารถเขียนเป็น @submit.prevent ก็ได้ -->
     <label>กรุณาระบุความถนัดของท่าน: </label>
-    <input type="text"/>
+    <input type="text" ref="ableElement"/>
     <button type="submit"> submit</button>
   </form>
 
   <h1>ชื่อ-นามสกุลของฉัน: {{firstname}} {{lastname}}</h1>    <!-- เป็นการดึงเอาค่า proprty ชื่อ firstname มาแสดง -->
   <h1>ชื่อเล่น: {{nickname}} </h1>
+  <h1>ความสามารถพิเศษ: {{ability}} </h1>
   <h1>อายุ: {{age}} </h1>
   <p>ประวัติของคุณ: {{getFullname()}} </p>
   <p>ที่อยู่: <span v-html="address"></span></p>
@@ -47,6 +49,7 @@ export default {
       nickname:"",
       age: 21,
       address: "<i>กรุงเทพมหานคร</i>",
+      ability:"",
       picture: "https://cdn-icons-png.flaticon.com/512/219/219986.png",
       size: 70,
       social: "https://www.facebook.com/",
@@ -77,6 +80,9 @@ export default {
 
     submitForm(event){
       event.preventDefault()      //เพื่อให้ไม่เกิดการรีเฟรช หลังจากกดส่งแบบฟอร์ม
+      //console.log(this.$refs.imageURL)    //ได้ผลลัพธ์เป็น tag เลย
+      //console.log(this.$refs.ableElement)
+      this.ability = this.$refs.ableElement.value
       alert("บันทึกแล้ว")
     }
   },
