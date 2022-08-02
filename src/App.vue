@@ -17,21 +17,24 @@
   <h1>ความสามารถพิเศษ: {{ability}} </h1>
   <h1>อายุ: {{age}} </h1>
   <p>ประวัติของคุณ: {{getFullname()}} </p>
-  <p>ที่อยู่: <span v-html="address"></span></p>
-  <p>Social: <a :href="social" target="_blank">facebook</a></p>
-  <p> งานอดิเรก </p>
-  <ul>
-    <li>{{hobby[0]}}</li>
-    <li>{{hobby[1]}}</li>
-    <li>{{hobby[2]}}</li>
-  </ul>
-  <p> ข้อมูลพื้นฐาน: </p>
-  <ul>
-    <li>เพศ: {{general.gender}}</li>
-    <li>น้ำหนัก: {{general.weight}} Kg</li>
-    <li>ส่วนสูง: {{general.height}} cm.</li>
-    <li>เป็นโรคติดต่อหรือไม่: {{general.status}} </li>
-  </ul>
+  <p>{{isvisible}} </p>
+  <button @click ="toggleVisible"> {{isvisible? "ซ่อนข้อมูล": "แสดงผลลัพธ์"}} Click...</button> <br>
+  <article v-show="isvisible">
+    <!-- v-show = จะถูก render เรียบร้อยแล้ว แค่มันไม่ได้แสดงผลออกมา แต่ v-if จะถูกแทรกลงไปภายหลังหากเงื่อนไขเป็นจริง -->
+    <p>ที่อยู่: <span v-html="address"></span></p>
+    <p>Social: <a :href="social" target="_blank">facebook</a></p>
+    <p v-if="hobby.length === 0">ไม่มีงานอดิเรก</p>    <!-- กรณีที่ hobby เป็นลิสต์ว่างๆ -->
+    <div v-else>
+      <p> งานอดิเรก </p>
+      <ul>
+        <li v-for="(item,index) in hobby" :key="index">{{index}} - {{item}}</li>      <!-- Key ต้องไม่ซ้ำกัน!!!! -->
+      </ul>
+    </div>
+    <p> ข้อมูลพื้นฐาน: </p>
+    <ul>
+      <li v-for="(item,key) in general" :key="key">{{key}} - {{item}}</li>
+    </ul>
+  </article>
   <button @click="showData"> Click to see information </button>     <!-- You can use 'v-on:' or '@' -->
   <button @click="increase(10)"> Increase </button>            <!-- @click.ctrl คือ คลิกเมาส์ซ้าย + กดปุ่ม ctrl -->
   <button @click.middle="decrease"> Decrease</button>               <!-- @click.middle คือ คลิกเมาส์กลาง(scroll) แล้วถึงจะทำงาน -->
@@ -53,8 +56,9 @@ export default {
       picture: "https://cdn-icons-png.flaticon.com/512/219/219986.png",
       size: 70,
       social: "https://www.facebook.com/",
-      hobby: ["ฟังเพลง", "ดูหนัง", "นอน"],
-      general: {gender: "หญิง", weight:47, height:163, status:false}
+      hobby: ["กินข้าว", "ดูหนัง", "ฟังเพลง", "ดูทีวี", "นอนนน", "เลี้ยงแมว"],
+      general: {gender: "หญิง", weight:47, height:163, status:false},
+      isvisible:false
     }
   },
   methods:{
@@ -84,6 +88,10 @@ export default {
       //console.log(this.$refs.ableElement)
       this.ability = this.$refs.ableElement.value
       alert("บันทึกแล้ว")
+    },
+
+    toggleVisible(){
+      this.isvisible = !this.isvisible
     }
   },
   components: {
