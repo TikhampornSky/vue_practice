@@ -12,7 +12,9 @@
                 :salary="item.salary"
                 :department="item.department"
                 :isVisible="item.isVisible"
-            />
+                @show="toggleVisible"
+                @delete="removeEmployee"            
+            />  <!-- @show คือ event show ที่ลูกส่งมา -->
         </ul>
     </div>
   </div>
@@ -40,6 +42,23 @@ export default {
     components:{
         PersonData
     },
+    methods:{
+        toggleVisible(id){
+            //console.log("child ID: " + id)
+            this.employees = this.employees.map((item) => {
+                if(item.id == id) {
+                    return {...item, isVisible:!item.isVisible}         // ...item คือ ตัวอื่นๆเหมือนเดิม
+                }
+                return item
+            })
+        },
+
+        removeEmployee(id){
+            this.employees = this.employees.filter(item=>{           //กรอกเอาแค่เฉพาะอันที่ id ไม่เท่ากับตัวที่จะลบ
+                return item.id != id
+            })
+        }
+    }
     //props:['employees']               //รับค่าจาก props จาก App.js ในกรณีถ้ามี
 }
 </script>

@@ -1,8 +1,8 @@
 <template>
     <li>
         <h1>{{message}} {{name}}</h1>         <!-- show 'props' -->
-        <button>ดูรายละเอียด</button>&nbsp;
-        <button>ลบข้อมูล</button>
+        <button @click="showDescription(id)">ดูรายละเอียด</button>&nbsp;
+        <button @click="deleteEmployee(id)">ลบข้อมูล</button>
         <div v-show="isVisible">
             <p> เงินเดือน: {{salary}}  ตำแหน่งงาน: {{department}} </p>
         </div>
@@ -38,6 +38,17 @@ export default {
         },
         isVisible:{
             type:Boolean
+        }
+    },
+    methods:{
+        showDescription(id) {
+            //console.log(id)
+            this.$emit("show", id)      //ส่งสัญญาณไปหา parent โดยใช้คำสั่ง emit ซึ่งที่ส่งไปจะอยู่ในรูปแบบ event ชื่อว่า show
+        },
+
+        deleteEmployee(id){
+            //console.log(id)
+            this.$emit("delete", id) 
         }
     }
 }
