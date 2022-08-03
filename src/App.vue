@@ -16,8 +16,22 @@
   <h1>ชื่อเล่น: {{nickname}} </h1>
   <h1>ความสามารถพิเศษ: {{ability}} </h1>
   <h1>อายุ: {{age}} </h1>
+
+  <h1>เงินเดือน: {{salary}} บาท</h1>
+  <button @click="increaseSalary()"> Increase </button> <br>
+  <h1>รายได้ต่อปี: {{getIncome}} บาท</h1>
+  <h1>ตำแหน่งงาน: {{getDepartment}} </h1>
+
+  <h2>สุ่ม1 (Method): {{getRandomByMethod()}} </h2>    <!-- ได้ต่างกัน รันของใครของมัน -->
+  <h2>สุ่ม2 (Method): {{getRandomByMethod()}} </h2>
+  <hr/>
+  <h2>สุ่ม1 (Computed): {{getRandomByComputed}} </h2>  <!-- ได้เหมือนเดิม ตราบใดที่ค่าไม่เปลี่ยน -->
+  <h2>สุ่ม2 (Computed): {{getRandomByComputed}} </h2> 
+
   <p>ประวัติของคุณ: {{getFullname()}} </p>
+  <p>ประวัติของคุณ2: {{getFullname2}} </p>     <!-- เรียก computed  -->
   <p>{{isvisible}} </p>
+
   <button @click ="toggleVisible"> {{isvisible? "ซ่อนข้อมูล": "แสดงผลลัพธ์"}} Click...</button> <br>
   <article v-show="isvisible">
     <!-- v-show = จะถูก render เรียบร้อยแล้ว แค่มันไม่ได้แสดงผลออกมา แต่ v-if จะถูกแทรกลงไปภายหลังหากเงื่อนไขเป็นจริง -->
@@ -58,7 +72,8 @@ export default {
       social: "https://www.facebook.com/",
       hobby: ["กินข้าว", "ดูหนัง", "ฟังเพลง", "ดูทีวี", "นอนนน", "เลี้ยงแมว"],
       general: {gender: "หญิง", weight:47, height:163, status:false},
-      isvisible:false
+      isvisible:false,
+      salary: 10000
     }
   },
   methods:{
@@ -73,6 +88,9 @@ export default {
 
     increase(num){
       this.age += num
+    },
+    increaseSalary() {
+      this.salary += 10000
     },
     decrease(){
       this.age--
@@ -92,9 +110,40 @@ export default {
 
     toggleVisible(){
       this.isvisible = !this.isvisible
+    },
+
+    getRandomByMethod(){
+      return Math.random()
     }
   },
-  components: {
+  computed:{  //Getter method และจะมีการดักจับค่าเมื่อมีการเปลี่ยนแปลง (รีใหม่เมื่อค่าเปลี่ยน แต่ method รีใหม่เวลา component Re-render)  
+    getFullname2() {
+      return `${this.firstname}  ${this.lastname}`
+    },
+
+    getRandomByComputed(){
+      return Math.random()
+    },
+
+    getIncome() {
+      return this.salary*12
+    },
+
+    getDepartment() {
+      return this.salary >= 35000 ? "Project Manager" : "Programmer"
+    }
+  },
+  watch:{       //ติดตามการเปลี่ยนแปลงของ Data หรือ Properties นั้นๆ
+    salary(value){
+      if (value > 50000) {
+        alert("เงินเดือนมากไปแร้ว")    //ถ้าค่าที่ติดตามเข้าเงื่อนไข จะทำสิ่งนี้
+        setTimeout(() => {
+          this.salary = 20000
+        },2000)                     //ผ่านไป 2 ms ค่าจะถูกรีเซ็ทกลับมาเป็นเหมือนเดิม
+      }
+    }
+  },
+  components: {     
     HelloWorld
   }
 }
