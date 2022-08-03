@@ -1,11 +1,13 @@
 <template>
     <li>
         <h1>{{message}} {{name}}</h1>         <!-- show 'props' -->
-        <button @click="showDescription(id)">ดูรายละเอียด</button>&nbsp;
+        <button @click="showDescription(id)" ref="btnToggle">แสดงผลลัพธ์</button>&nbsp;
         <button @click="deleteEmployee(id)">ลบข้อมูล</button>
-        <div v-show="isVisible">
-            <p> เงินเดือน: {{salary}}  ตำแหน่งงาน: {{department}} </p>
-        </div>
+        <transition name="fade">
+            <div v-show="isVisible">
+                <p> เงินเดือน: {{salary}}  ตำแหน่งงาน: {{department}} </p>
+            </div>
+        </transition>
     </li>
 </template>
 
@@ -43,6 +45,7 @@ export default {
     methods:{
         showDescription(id) {
             //console.log(id)
+            this.$refs.btnToggle.innerText = this.isVisible?'แสดงผลลัพธ์':'ซ่อนผลลัพธ์';
             this.$emit("show", id)      //ส่งสัญญาณไปหา parent โดยใช้คำสั่ง emit ซึ่งที่ส่งไปจะอยู่ในรูปแบบ event ชื่อว่า show
         },
 
@@ -72,5 +75,12 @@ export default {
         color:white;
         padding: 0.05rem 1rem;
         box-shadow: 1px 1px 2px rgba(0,0,0, 0.26);
+    }
+
+    .fade-enter-from{
+        opacity: 0;
+    }
+    .fade-enter-active{
+        transition: all 0.5s linear;
     }
 </style>
