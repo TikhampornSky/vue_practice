@@ -40,7 +40,7 @@ export default {
         }
     },
     components:{
-        PersonData
+        PersonData,
     },
     methods:{
         toggleVisible(id){

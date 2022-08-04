@@ -1,17 +1,28 @@
 <template>
-    <li>
-        <h1>{{message}} {{name}}</h1>         <!-- show 'props' -->
+    <CardSlot>
+        <template v-slot:card-header>
+            <h1>{{message}} {{name}}</h1>         <!-- show 'props' -->
+        </template>
+
+        <template v-slot:card-button>
         <button @click="showDescription(id)" ref="btnToggle">แสดงผลลัพธ์</button>&nbsp;
         <button @click="deleteEmployee(id)">ลบข้อมูล</button>
-        <transition name="fade">
-            <div v-show="isVisible">
-                <p> เงินเดือน: {{salary}}  ตำแหน่งงาน: {{department}} </p>
-            </div>
-        </transition>
-    </li>
+        </template>
+
+        <template v-slot:card-content>
+            <transition name="fade">
+                <div v-show="isVisible">
+                    <p> เงินเดือน: {{salary}}  ตำแหน่งงาน: {{department}} </p>
+                </div>
+            </transition>
+        </template>
+    </CardSlot>
 </template>
 
 <script>
+
+import CardSlot from './CardSlot.vue'
+
 export default {
     name:"PersonData",
     data(){
@@ -53,6 +64,10 @@ export default {
             //console.log(id)
             this.$emit("delete", id) 
         }
+    },
+
+    components:{
+        CardSlot
     }
 }
 </script>
