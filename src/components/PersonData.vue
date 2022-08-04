@@ -1,18 +1,20 @@
 <template>
     <CardSlot>
         <template v-slot:card-header>
-            <h1>{{message}} {{name}}</h1>         <!-- show 'props' -->
+            <h1>{{name}}</h1>         <!-- show 'props' -->
         </template>
 
         <template v-slot:card-button>
-        <button @click="showDescription(id)" ref="btnToggle">แสดงผลลัพธ์</button>&nbsp;
+        <button @click="showDescription(id)" ref="btnToggle">แสดงผลลัพธ์</button>&nbsp;       <!-- ข้อมูลที่มาจากการกรอก จะยังไม่สามารถใช้สองปุ่มนี้ได้ เนื่องจากขาด ID ที่เหมาะสม -->
         <button @click="deleteEmployee(id)">ลบข้อมูล</button>
         </template>
 
         <template v-slot:card-content>
             <transition name="fade">
                 <div v-show="isVisible">
-                    <p> เงินเดือน: {{salary}}  ตำแหน่งงาน: {{department}} </p>
+                    <p> เงินเดือน: {{salary}}  ตำแหน่งงาน: {{department}}  เพศ: {{gender}} </p>
+                    <!-- <li v-for="(item,index) in hobby" :key="index">{{index}} - {{item}}</li> --> 
+                    <span>ความสามารถ:</span> <span v-for="(item,index) in skill" :key="index">{{item}}  {{  }}</span>
                 </div>
             </transition>
         </template>
@@ -51,6 +53,12 @@ export default {
         },
         isVisible:{
             type:Boolean
+        },
+        gender:{
+            type:String
+        },
+        skill:{
+            type:Array
         }
     },
     methods:{

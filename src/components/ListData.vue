@@ -7,14 +7,29 @@
             <PersonData 
                 v-for="(item, index) in employees"
                 :key="index"
+                :id="500"
+                :name="item.name"
+                :salary="item.salary"
+                :department="item.department"
+                :gender="item.gender"
+                :skill="item.skill"
+                :isVisible=true
+                @show="toggleVisible2"
+                @delete="removeEmployee2"            
+            />  
+            <PersonData 
+                v-for="(item, index) in employees_sample"
+                :key="index"
                 :id="item.id"
                 :name="item.name"
                 :salary="item.salary"
                 :department="item.department"
+                :gender="item.gender"
+                :skill="item.skill"
                 :isVisible="item.isVisible"
                 @show="toggleVisible"
                 @delete="removeEmployee"            
-            />  <!-- @show คือ event show ที่ลูกส่งมา -->
+            />  <!-- @show คือ event show ที่ลูกส่งมา ซึ่งอันนี้เป็นข้อมูลตัวอย่าง -->
         </ul>
     </div>
   </div>
@@ -29,13 +44,10 @@ export default {
     data(){
         return {
             message: "ข้อมูลพนักงาน",
-            employees:[                     //สมมติว่าคือข้อมูลที่ดึงได้จากฐานข้อมูล
-                {id:1, name:"Tontan",salary:20000 ,department:"โปรแกรมเมอร์" ,isVisible:false},
-                {id:2, name:"Jim",salary:30000 ,department:"ฝ่ายการตลาด" ,isVisible:false},
-                {id:3, name:"Jane",salary:27000 ,department:"กราฟฟิค" ,isVisible:false},
-                {id:4, name:"John",salary:50000 ,department:"ฝ่ายขาย" ,isVisible:false},
-                {id:5, name:"Fah",salary:80000 ,department:"ผู้ลงทุน" ,isVisible:false},
-                {id:6, name:"Tonyod",department:"ผู้จัดการฝ่าย A",isVisible:false},
+            employees_sample:[                     //สมมติว่าคือข้อมูลที่ดึงได้จากฐานข้อมูล
+                {id:1, name:"Tontan",salary:20000 ,department:"โปรแกรมเมอร์" ,isVisible:false, gender:"ชาย",skill:['ภาษาจีน','ภาษาญี่ปุ่น','ภาษาอังกฤษ']},
+                {id:2, name:"Jim",salary:30000 ,department:"ฝ่ายการตลาด" ,isVisible:false, gender:"หญิง",skill:['ภาษาจีน','ภาษาอังกฤษ']},
+                {id:3, name:"Jane",salary:27000 ,department:"กราฟฟิค" ,isVisible:false, gender:"ชาย",skill:['ภาษาญี่ปุ่น','ภาษาอังกฤษ']},
             ]
         }
     },
@@ -44,8 +56,8 @@ export default {
     },
     methods:{
         toggleVisible(id){
-            //console.log("child ID: " + id)
-            this.employees = this.employees.map((item) => {
+            console.log("child ID: " + id)
+            this.employees_sample = this.employees_sample.map((item) => {
                 if(item.id == id) {
                     return {...item, isVisible:!item.isVisible}         // ...item คือ ตัวอื่นๆเหมือนเดิม
                 }
@@ -54,12 +66,14 @@ export default {
         },
 
         removeEmployee(id){
-            this.employees = this.employees.filter(item=>{           //กรอกเอาแค่เฉพาะอันที่ id ไม่เท่ากับตัวที่จะลบ
+            this.employees_sample = this.employees_sample.filter(item=>{           //กรอกเอาแค่เฉพาะอันที่ id ไม่เท่ากับตัวที่จะลบ
                 return item.id != id
             })
-        }
-    }
-    //props:['employees']               //รับค่าจาก props จาก App.js ในกรณีถ้ามี
+        },
+
+        //----------สำหรับข้อมูลที่มีการกรอกเข้าไป แต่จะมีปัญหาเนื่องจากค่า id ยังไม่ได้กำหนดถูกต้องตามที่ควร--------------
+    },
+    props:['employees']               //รับค่าจาก props จาก App.js ในกรณีถ้ามี
 }
 </script>
 

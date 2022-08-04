@@ -3,8 +3,8 @@
   <header>
     <h1>ระบบจัดการข้อมูลของพนักงาน</h1>
   </header>
-
-  <section class="employee-content">
+  <FormComponent @save="insertEmployee" />
+  <section class="employee-content" v-if="employees.length >= 0" >
     <!--
     <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App 1234"/>  -->
@@ -12,7 +12,7 @@
     <!-- <ListData :employees="employees"/> -->
     <!-- props (ส่งให้ ListData) -->
     <h2>ข้อมูลพนักงาน</h2>
-    <ListData />
+    <ListData :employees="employees" />
     <!-- <EmployeeTest/> -->
   </section>
 </template>
@@ -21,6 +21,7 @@
 //import HelloWorld from './components/HelloWorld.vue'
 //import EmployeeTest from './components/EmployeeTest.vue'
 import ListData from "./components/ListData.vue";
+import FormComponent from './components/FormComponent.vue'
 
 export default {
   name: "App",
@@ -28,7 +29,18 @@ export default {
     //HelloWorld,
     //EmployeeTest,
     ListData,
+    FormComponent,
   },
+  data(){
+    return{
+      employees:[]
+    }
+  },
+  methods:{
+    insertEmployee(data){
+      this.employees.push(data)           //push into the array
+    }
+  }
 };
 </script>
 
